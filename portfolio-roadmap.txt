@@ -1,0 +1,276 @@
+================================================================================
+PORTFOLIO PROJECT — FULL ROADMAP
+================================================================================
+Stack: Angular + Spring Boot 4 + MySQL + JWT
+Use this file to track your progress. Mark steps as you finish them.
+
+STATUS LEGEND:
+  ✅ DONE
+  🔄 IN PROGRESS
+  ⬜ NOT STARTED
+================================================================================
+
+
+================================================================================
+PHASE 1 — BACKEND (Spring Boot)
+================================================================================
+Goal: Build the full REST API before touching Angular.
+Reason: Angular needs endpoints to call. Always build the backend first.
+================================================================================
+
+STEP 1 ✅ — Spring Boot project setup
+  - Created project via start.spring.io
+  - Dependencies: Spring Web, Spring Data JPA, MySQL Driver, Lombok, Validation
+  - Configured application.properties (DB connection, port 8080)
+  - Created MySQL database: portfolio_db
+  - Created package structure: controller / service / repository / model / dto
+  - Server boots successfully on localhost:8080
+  - Spring Security removed for now (added back in Step 7)
+
+----------------------------------------
+
+STEP 2 🔄 — First entity + REST endpoint (Project)
+  What you learn:
+    - How @Entity maps a Java class to a MySQL table
+    - How JpaRepository gives you free CRUD methods
+    - How the Controller → Service → Repository layers work
+    - How to test an API endpoint in the browser
+  Files to create:
+    - model/Project.java
+    - repository/ProjectRepository.java
+    - service/ProjectService.java
+    - controller/ProjectController.java
+  Done when:
+    - GET http://localhost:8080/api/projects returns []
+    - "projects" table appears in MySQL Workbench automatically
+
+----------------------------------------
+
+STEP 3 ⬜ — Remaining backend entities + endpoints
+  What you learn:
+    - Repeating the same pattern builds muscle memory
+    - Different field types (dates, enums, booleans)
+    - @Column customization
+  Entities to build (same pattern as Project each time):
+    a) Skill         → GET/POST/DELETE /api/skills
+    b) Experience    → GET/POST/DELETE /api/experience  (has date fields)
+    c) About         → GET/PUT /api/about               (single record)
+    d) Message       → POST /api/contact (public submit)
+                     → GET  /api/contact/messages (admin view)
+  Done when:
+    - All tables visible in MySQL Workbench
+    - All endpoints return correct responses in browser
+
+----------------------------------------
+
+STEP 4 ⬜ — Global error handling + CORS config
+  What you learn:
+    - @ControllerAdvice for catching exceptions globally
+    - Proper error responses (not Spring's ugly default Whitelabel page)
+    - Centralized CORS config (instead of @CrossOrigin on every controller)
+  Files to create:
+    - exception/GlobalExceptionHandler.java
+    - config/CorsConfig.java
+  Done when:
+    - Calling /api/projects/999 returns a clean JSON error, not a crash page
+    - CORS is handled in one place
+
+
+================================================================================
+PHASE 2 — FRONTEND (Angular)
+================================================================================
+Goal: Build all the public-facing portfolio pages.
+Reason: Get the visible portfolio working before adding auth complexity.
+================================================================================
+
+STEP 5 ⬜ — Angular project setup
+  What you learn:
+    - Angular CLI and project structure
+    - What every generated file does
+    - How Angular routing works
+    - Environments (dev points to localhost:8080, prod to real server)
+  Commands:
+    ng new portfolio-frontend
+    ng generate component pages/home
+    ng generate component pages/projects
+    ng generate component pages/skills
+    ng generate component pages/timeline
+    ng generate component pages/contact
+    ng generate service services/project
+  Done when:
+    - ng serve runs on localhost:4200
+    - Navigating between routes works
+
+----------------------------------------
+
+STEP 6 ⬜ — Connect Angular to Spring Boot (Projects page first)
+  What you learn:
+    - HttpClient module
+    - Services and dependency injection in Angular
+    - Observables and the async pipe
+    - *ngFor to display lists
+  Files to create/edit:
+    - services/project.service.ts  (calls GET /api/projects)
+    - pages/projects/projects.component.ts
+    - pages/projects/projects.component.html
+  Done when:
+    - Projects page displays data fetched live from your Spring Boot API
+
+----------------------------------------
+
+STEP 7 ⬜ — Build all remaining public pages
+  What you learn:
+    - Reusing the same pattern for different data
+    - Reactive Forms (contact form)
+    - File download (CV/resume)
+    - Angular animations basics
+  Pages to build:
+    a) Skills page       (displays skills from /api/skills)
+    b) Timeline page     (displays experience from /api/experience)
+    c) About page        (displays content from /api/about)
+    d) Contact page      (form that POSTs to /api/contact)
+    e) CV download       (button that downloads your resume file)
+  Done when:
+    - All pages load real data from the API
+    - Contact form submits successfully
+
+
+================================================================================
+PHASE 3 — AUTHENTICATION (JWT)
+================================================================================
+Goal: Protect the admin endpoints and build the login flow.
+Reason: Without this, anyone can call POST/DELETE on your API.
+================================================================================
+
+STEP 8 ⬜ — Spring Security + JWT (backend)
+  What you learn:
+    - How Spring Security filter chain works
+    - What a JWT token is and how it is structured
+    - How to sign and verify tokens
+    - Which routes are public vs protected
+  What to add to pom.xml:
+    - spring-boot-starter-security (back in)
+    - jjwt library (for creating/reading JWT tokens)
+  Files to create:
+    - security/JwtUtil.java            (creates and validates tokens)
+    - security/JwtFilter.java          (intercepts every request)
+    - security/SecurityConfig.java     (defines which routes need auth)
+    - controller/AuthController.java   (POST /api/auth/login)
+    - model/AdminUser.java             (admin credentials in DB)
+  Done when:
+    - POST /api/auth/login with correct credentials returns a JWT token
+    - POST /api/projects without a token returns 401 Unauthorized
+    - POST /api/projects with a valid token works correctly
+
+----------------------------------------
+
+STEP 9 ⬜ — Angular auth (login + route guard + interceptor)
+  What you learn:
+    - Angular Route Guards (CanActivate)
+    - HTTP Interceptors (modify every outgoing request)
+    - Storing auth state in a service (never localStorage for JWT)
+    - Login form with error handling
+  Files to create:
+    - pages/login/login.component.ts
+    - services/auth.service.ts         (holds the token in memory)
+    - guards/auth.guard.ts             (blocks /admin if not logged in)
+    - interceptors/jwt.interceptor.ts  (adds Authorization header)
+  Done when:
+    - /admin route redirects to /login if not authenticated
+    - After login, admin pages are accessible
+    - Every API call automatically includes the JWT header
+
+
+================================================================================
+PHASE 4 — ADMIN PANEL
+================================================================================
+Goal: A simple UI to manage portfolio content without touching the database.
+================================================================================
+
+STEP 10 ⬜ — Admin panel pages (Angular)
+  What you learn:
+    - Angular Reactive Forms (full validation)
+    - POST / PUT / DELETE from Angular
+    - Two-way data binding
+    - Conditional rendering
+  Pages to build:
+    a) Admin dashboard    (overview, links to all sections)
+    b) Manage Projects    (list + add form + delete button)
+    c) Manage Skills      (list + add form + delete button)
+    d) Manage Experience  (list + add form + delete button)
+    e) Edit About         (single form, PUT request)
+    f) View Messages      (read-only list of contact submissions)
+  Done when:
+    - Admin can add a new project and it immediately appears on the public page
+    - Admin can delete content
+    - Admin can edit About section
+
+
+================================================================================
+PHASE 5 — POLISH + FINISHING
+================================================================================
+
+STEP 11 ⬜ — UI polish + styling
+  - Choose a CSS approach (plain CSS, Angular Material, or Tailwind)
+  - Make the portfolio look like YOUR portfolio
+  - Responsive design (mobile friendly)
+  - Loading states and error messages
+
+STEP 12 ⬜ — Final cleanup
+  - Remove all console.log and debug code
+  - Environment files properly configured
+  - Test all flows end to end
+  - README files written for both projects
+
+
+================================================================================
+WHAT YOU WILL KNOW AFTER THIS PROJECT
+================================================================================
+
+Spring Boot:
+  - REST API design
+  - JPA entities and repositories
+  - Service layer architecture
+  - Spring Security
+  - JWT authentication
+  - Global exception handling
+  - CORS configuration
+
+Angular:
+  - Component architecture
+  - Routing and route guards
+  - Services and dependency injection
+  - HttpClient and Observables
+  - Reactive Forms with validation
+  - HTTP Interceptors
+  - Auth flow
+
+General:
+  - Full-stack architecture
+  - How frontend and backend communicate
+  - Token-based authentication
+  - Layered application design
+
+
+================================================================================
+CURRENT ACTIVE TASK
+================================================================================
+STEP 2 — Test the Project endpoint
+
+  1. Make sure all 4 files are created:
+       model/Project.java
+       repository/ProjectRepository.java
+       service/ProjectService.java
+       controller/ProjectController.java
+
+  2. Restart the Spring Boot server
+
+  3. Open browser → http://localhost:8080/api/projects
+     Expected result: []
+
+  4. Open MySQL Workbench → refresh portfolio_db
+     Expected result: "projects" table now exists with all columns
+
+================================================================================
+END OF ROADMAP
+================================================================================
