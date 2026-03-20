@@ -1,0 +1,19 @@
+<section class="projects-section">
+  <h2>Projects</h2>
+
+  <div *ngIf="isLoading" class="loading">
+    Loading projects...
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <div class="projects-grid" *ngIf="!isLoading && !errorMessage">
+    <div class="project-card" *ngFor="let project of projects">
+      <h3>{{ project.title }}</h3>
+      <p>{{ project.description }}</p>
+      <span class="technologies">{{ project.technologies }}</span>
+    </div>
+  </div>
+</section>
