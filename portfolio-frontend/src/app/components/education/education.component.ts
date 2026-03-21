@@ -12,13 +12,22 @@ export class EducationComponent {
 
     educations = [
     {
-      degree: "Master's in Software Engineering",
+      degree: "Master 2 in Software Engineering",
       institution: 'University Name',
       location: 'City, Country',
       startDate: '2020',
       endDate: '2022',
       description: 'Specialized in software architecture, design patterns and modern development practices. Graduated with distinction.',
       tags: ['Software Architecture', 'Design Patterns', 'Research']
+    },
+    {
+      degree: "Master 1 in Computer Science",
+      institution: 'University Name',
+      location: 'City, Country',
+      startDate: '2017',
+      endDate: '2020',
+      description: 'Studied core computer science fundamentals including algorithms, data structures, databases and software engineering.',
+      tags: ['Algorithms', 'Data Structures', 'Databases']
     },
     {
       degree: "Bachelor's in Computer Science",
