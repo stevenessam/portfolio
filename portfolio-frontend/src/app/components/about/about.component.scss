@@ -1,0 +1,122 @@
+.about {
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+
+      span {
+        color: #6c63ff;
+      }
+    }
+
+    .underline {
+      width: 60px;
+      height: 4px;
+      background: #6c63ff;
+      margin: 1rem auto 0;
+      border-radius: 2px;
+    }
+  }
+
+  .about-content {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+
+    .about-text {
+      flex: 1.5;
+
+      p {
+        color: #aaa;
+        line-height: 1.9;
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+      }
+
+      .about-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        margin: 2rem 0;
+
+        .detail-item {
+          display: flex;
+          gap: 1rem;
+          font-size: 0.95rem;
+
+          .detail-label {
+            color: #6c63ff;
+            font-weight: 600;
+            min-width: 80px;
+          }
+
+          .detail-value {
+            color: #ccc;
+
+            &.available {
+              color: #4caf50;
+            }
+          }
+        }
+      }
+    }
+
+    .about-stats {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+
+      .stat-card {
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 2rem 1rem;
+        text-align: center;
+        transition: border-color 0.2s;
+
+        &:hover {
+          border-color: #6c63ff;
+        }
+
+        .stat-number {
+          display: block;
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #6c63ff;
+          margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+          font-size: 0.85rem;
+          color: #888;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+      }
+    }
+  }
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: #6c63ff;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+
+  &:hover {
+    background: transparent;
+    border: 2px solid #6c63ff;
+    color: #6c63ff;
+  }
+}
