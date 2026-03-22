@@ -5,7 +5,7 @@
 ---
 
 ## About the Project
-This is a full stack personal portfolio website built from scratch to showcase skills, experience, projects, and education. The project is designed to demonstrate a modern technology stack — Angular on the frontend, Spring Boot on the backend, MySQL as the database, with REST API communication — to create a professional, maintainable, and fully functional portfolio application.
+This is a full stack personal portfolio website built from scratch to showcase skills, experience, projects, and education. The project is designed to demonstrate a modern technology stack: Angular on the frontend, Spring Boot on the backend, MySQL as the database, with REST API communication to create a professional, maintainable, and fully functional portfolio application.
 
 ---
 
@@ -15,6 +15,7 @@ This is a full stack personal portfolio website built from scratch to showcase s
 - Backend built with Spring Boot and MySQL  
 - Frontend built with Angular 17+ and SCSS  
 - Projects section connected to a live REST API  
+- Admin panel (JWT protected) for content management (In development) 
 
 ---
 
