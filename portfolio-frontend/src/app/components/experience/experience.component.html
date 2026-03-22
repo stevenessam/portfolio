@@ -4,10 +4,11 @@
     <div class="underline"></div>
   </div>
 
-  <div class="timeline">
-    <div
-      class="timeline-item"
-      *ngFor="let exp of experiences" >
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="timeline" *ngIf="!isLoading && !errorMessage">
+    <div class="timeline-item" *ngFor="let exp of experiences">
       <div class="timeline-dot"></div>
 
       <div class="timeline-card">
@@ -22,7 +23,7 @@
         <p class="timeline-description">{{ exp.description }}</p>
 
         <div class="tags">
-          <span class="tag" *ngFor="let tag of exp.tags">{{ tag }}</span>
+          <span class="tag" *ngFor="let tag of getTagsArray(exp.tags)">{{ tag }}</span>
         </div>
       </div>
     </div>

@@ -4,7 +4,10 @@
     <div class="underline"></div>
   </div>
 
-  <div class="about-content">
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="about-content" *ngIf="about && !isLoading">
     <div class="about-text">
       <p>{{ about.bio1 }}</p>
       <p>{{ about.bio2 }}</p>

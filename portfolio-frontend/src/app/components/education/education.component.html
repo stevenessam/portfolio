@@ -4,7 +4,10 @@
     <div class="underline"></div>
   </div>
 
-  <div class="timeline-horizontal">
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="timeline-horizontal" *ngIf="!isLoading && !errorMessage">
     <div class="timeline-track"></div>
 
     <div class="timeline-item" *ngFor="let edu of educations">
@@ -18,10 +21,9 @@
         <p class="timeline-description">{{ edu.description }}</p>
 
         <div class="tags">
-          <span class="tag" *ngFor="let tag of edu.tags">{{ tag }}</span>
+          <span class="tag" *ngFor="let tag of getTagsArray(edu.tags)">{{ tag }}</span>
         </div>
       </div>
     </div>
-
   </div>
 </div>

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from '../../services/message.service';
+import { Message } from '../../models/message.model';
 
 @Component({
   selector: 'app-contact',
@@ -17,7 +19,7 @@ export class ContactComponent {
     { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/in/stevenessam' }
   ];
 
-  formData = {
+  formData: Message = {
     name: '',
     email: '',
     subject: '',
@@ -28,6 +30,8 @@ export class ContactComponent {
   successMessage = '';
   errorMessage = '';
 
+  constructor(private messageService: MessageService) {}
+
   onSubmit(): void {
     if (!this.formData.name || !this.formData.email || !this.formData.message) {
       this.errorMessage = 'Please fill in all required fields.';
@@ -36,13 +40,19 @@ export class ContactComponent {
 
     this.isSubmitting = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
-    // For now we just simulate a success
-    // Later we will call the Spring Boot API here
-    setTimeout(() => {
-      this.isSubmitting = false;
-      this.successMessage = 'Message sent successfully! I will get back to you soon.';
-      this.formData = { name: '', email: '', subject: '', message: '' };
-    }, 1000);
+    this.messageService.sendMessage(this.formData).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.successMessage = 'Message sent successfully! I will get back to you soon.';
+        this.formData = { name: '', email: '', subject: '', message: '' };
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.errorMessage = 'Something went wrong. Please try again.';
+        console.error(err);
+      }
+    });
   }
 }

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SkillService } from '../../services/skill.service';
+import { Skill } from '../../models/skill.model';
 
 @Component({
   selector: 'app-skills',
@@ -8,44 +10,41 @@ import { CommonModule } from '@angular/common';
   templateUrl: './skills.component.html',
   styleUrl: './skills.component.scss'
 })
-export class SkillsComponent {
+export class SkillsComponent implements OnInit {
 
-  skillCategories = [
-    {
-      category: 'Frontend',
-      skills: [
-        { name: 'Angular', level: 75 },
-        { name: 'TypeScript', level: 80 },
-        { name: 'HTML / CSS', level: 90 },
-        { name: 'SCSS', level: 75 }
-      ]
-    },
-    {
-      category: 'Backend',
-      skills: [
-        { name: 'Spring Boot', level: 80 },
-        { name: 'Java', level: 85 },
-        { name: 'REST API', level: 85 },
-        { name: 'Spring Security', level: 70 }
-      ]
-    },
-    {
-      category: 'Database & Tools',
-      skills: [
-        { name: 'MySQL', level: 80 },
-        { name: 'Git', level: 85 },
-        { name: 'Maven', level: 75 },
-        { name: 'VS Code', level: 90 }
-      ]
-    },
-       {
-      category: 'Project Management',
-      skills: [
-        { name: 'Git', level: 80 },
-        { name: 'Agile/Scrum', level: 85 },
-        { name: 'Jira', level: 75 },
-        { name: 'Confluence', level: 90 }
-      ]
-    }
-  ];
+  skillCategories: { category: string; skills: Skill[] }[] = [];
+  isLoading = true;
+  errorMessage = '';
+
+  constructor(private skillService: SkillService) {}
+
+  ngOnInit(): void {
+    this.skillService.getSkills().subscribe({
+      next: (data) => {
+        this.skillCategories = this.groupByCategory(data);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Could not load skills.';
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  private groupByCategory(skills: Skill[]): { category: string; skills: Skill[] }[] {
+    const groups: { [key: string]: Skill[] } = {};
+
+    skills.forEach(skill => {
+      if (!groups[skill.category]) {
+        groups[skill.category] = [];
+      }
+      groups[skill.category].push(skill);
+    });
+
+    return Object.keys(groups).map(category => ({
+      category,
+      skills: groups[category]
+    }));
+  }
 }
